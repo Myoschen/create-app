@@ -8,11 +8,11 @@
     "url": "https://github.com/Myoschen"
   },
   "license": "MIT",
-  "module": "index.ts",
   "type": "module",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "build": "tsup src/index.ts --format cjs,esm",
+    "build": "tsup src/index.ts",
+    "start": "tsup && node dist/index.js",
     "lint": "eslint src",
     "preinstall": "npx only-allow pnpm"
   },
@@ -31,8 +31,6 @@
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "arg": "^5.0.2",
-    "execa": "^9.3.1",
-    "fs-extra": "^11.2.0",
     "picocolors": "^1.0.1"
   }
 }
