@@ -9,6 +9,12 @@
   },
   "license": "MIT",
   "type": "module",
+  "bin": {
+    "create-app": "dist/index.js"
+  },
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsup src/index.ts",
@@ -22,6 +28,7 @@
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
     "eslint": "^9.9.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "tsup": "^8.2.4",
     "tsx": "^4.17.0"
   },

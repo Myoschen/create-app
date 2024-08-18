@@ -36,6 +36,9 @@ importers:
       eslint:
         specifier: ^9.9.0
         version: 9.9.0
+      eslint-plugin-simple-import-sort:
+        specifier: ^12.1.1
+        version: 12.1.1(eslint@9.9.0)
       tsup:
         specifier: ^8.2.4
         version: 8.2.4(tsx@4.17.0)(typescript@5.5.4)
@@ -587,6 +590,11 @@ packages:
   escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+
+  eslint-plugin-simple-import-sort@12.1.1:
+    resolution: {integrity: sha512-6nuzu4xwQtE3332Uz0to+TxDQYRLTKRESSc2hefVT48Zc8JthmN23Gx9lnYhu0FtkRSL1oxny3kJ2aveVhmOVA==}
+    peerDependencies:
+      eslint: '>=5.0.0'
 
   eslint-scope@8.0.2:
     resolution: {integrity: sha512-6E4xmrTw5wtxnLA5wYL3WDfhZ/1bUBGOXV0zQvVRDOtrR8D0p6W7fs3JweNYhwRYeGvd/1CKX2se0/2s7Q/nJA==}
@@ -1618,6 +1626,10 @@ snapshots:
       '@esbuild/win32-x64': 0.23.1
 
   escape-string-regexp@4.0.0: {}
+
+  eslint-plugin-simple-import-sort@12.1.1(eslint@9.9.0):
+    dependencies:
+      eslint: 9.9.0
 
   eslint-scope@8.0.2:
     dependencies:
