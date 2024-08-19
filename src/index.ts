@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import { join } from 'node:path'
+import * as path from 'node:path'
 import * as clack from '@clack/prompts'
 import arg from 'arg'
 import pc from 'picocolors'
 
 import pkg from '~/package.json'
-import { cancelOp, checkPackageManager, copyFiles, createFolder, loadTemplates, runCommand, type Template } from '@/utils'
+import { cancelOp, checkPackageManager, copyFiles, createFolder, isValidPackageName, loadTemplates, runCommand, type Template } from '@/utils'
 
 async function main() {
   const args = arg({
@@ -50,17 +50,18 @@ async function main() {
       placeholder: 'project',
       validate: (value) => {
         if (value.length === 0) return 'Project name is required!'
+        if (!isValidPackageName(path.basename(value))) return 'Project name is invalid!'
       },
     }))
     if (clack.isCancel(projectName)) cancelOp()
   }
 
-  const projectPath = join(currDir, projectName)
+  const projectPath = path.join(currDir, projectName)
 
   let templates: Template[] = []
 
   try {
-    templates = await loadTemplates(join(currDir, 'templates'))
+    templates = await loadTemplates(path.join(currDir, 'templates'))
   }
   catch (err) {
     clack.log.error('Loading templates failed!')

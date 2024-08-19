@@ -1,4 +1,4 @@
-import * as childProcess from 'node:child_process'
+import * as cp from 'node:child_process'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import * as clack from '@clack/prompts'
@@ -49,18 +49,23 @@ export async function copyFiles(src: string, dest: string) {
 
 export async function checkPackageManager(packageManager: string) {
   return new Promise<void>((resolve, reject) => (
-    childProcess.exec(`${packageManager} --version`, (err) => {
-      if (err) reject()
-      else resolve()
+    cp.exec(`${packageManager} --version`, (err) => {
+      err ? reject() : resolve()
     })
   ))
 }
 
 export async function runCommand(command: string, args: string[], cwd?: string) {
   return new Promise<void>((resolve, reject) => {
-    const process = childProcess.spawn(command, args, { cwd, shell: true })
+    const process = cp.spawn(command, args, { cwd, shell: true })
     process.on('close', (code) => {
       code !== 0 ? reject() : resolve()
     })
   })
+}
+
+/** @see https://github.com/SchemaStore/schemastore/blob/master/src/schemas/json/package.json#L212 */
+export function isValidPackageName(packageName: string) {
+  const regex = /^(?:(?:@(?:[a-z0-9-*~][a-z0-9-*._~]*)?\/[a-z0-9-._~])|[a-z0-9-~])[a-z0-9-._~]*$/
+  return regex.test(packageName)
 }
