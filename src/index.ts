@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
+import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import * as clack from '@clack/prompts'
 import arg from 'arg'
 import pc from 'picocolors'
 
-import pkg from '~/package.json'
+import cliPkg from '~/package.json'
 import { cancelOp, checkPackageManager, copyFiles, createFolder, isValidPackageName, loadTemplates, runCommand, type Template } from '@/utils'
 
 async function main() {
@@ -25,11 +27,13 @@ async function main() {
   }, { permissive: true })
 
   if (args['--version']) {
-    console.log(`v${pkg.version}`)
+    console.log(`v${cliPkg.version}`)
     process.exit(0)
   }
 
   if (args['--help']) {
+    console.log('Usage: create-app [options]\n')
+    console.log('Options:')
     console.log('--project-name       -p    Project name to be used.')
     console.log('--template           -t    Name of the template to use.')
     console.log('--help               -h    Show how to use the cli.')
@@ -40,7 +44,7 @@ async function main() {
 
   let projectName: string | symbol | undefined = args['--project-name']
 
-  clack.intro(pc.blue(`${pkg.name} v${pkg.version}`))
+  clack.intro(pc.blue(`${cliPkg.name} v${cliPkg.version}`))
 
   const currDir = process.cwd()
 
@@ -56,12 +60,14 @@ async function main() {
     if (clack.isCancel(projectName)) cancelOp()
   }
 
-  const projectPath = path.join(currDir, projectName)
+  const projectPath = path.resolve(currDir, projectName)
+  projectName = path.basename(projectPath)
 
   let templates: Template[] = []
 
   try {
-    templates = await loadTemplates(path.join(currDir, 'templates'))
+    const __dirname = path.dirname(fileURLToPath(import.meta.url))
+    templates = await loadTemplates(path.join(__dirname, 'templates'))
   }
   catch (err) {
     clack.log.error('Loading templates failed!')
@@ -99,6 +105,21 @@ async function main() {
   let packageManager: string | symbol | undefined = args['--package-manager']
 
   if (!packageManager) {
+    const isInstallDeps = await clack.confirm({
+      message: 'Installing dependencies now?',
+      active: 'yes',
+      inactive: 'no',
+      initialValue: true,
+    })
+    if (clack.isCancel(isInstallDeps)) cancelOp()
+
+    if (!isInstallDeps) {
+      clack.outro('done.')
+      process.exit(0)
+    }
+  }
+
+  if (!packageManager) {
     packageManager = await clack.select({
       message: 'Select package manager: ',
       options: [
@@ -112,6 +133,20 @@ async function main() {
     if (clack.isCancel(packageManager)) cancelOp()
   }
 
+  // overwrite package name
+  try {
+    const pkgPath = path.join(projectPath, 'package.json')
+    const pkg = JSON.parse(await fs.readFile(pkgPath, 'utf-8'))
+    pkg.name = projectName
+    await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
+  }
+  catch (err) {
+    clack.log.error(`Overwriting package name failed!`)
+    err instanceof Error && clack.log.info(err.message)
+    process.exit(1)
+  }
+
+  // check package manager exists
   try {
     await checkPackageManager(packageManager)
   }
