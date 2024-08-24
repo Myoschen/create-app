@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import * as clack from '@clack/prompts'
+import clack from '@clack/prompts'
 import arg from 'arg'
 import pc from 'picocolors'
 
@@ -16,6 +16,7 @@ async function main() {
     '--template': String,
     '--help': Boolean,
     '--version': Boolean,
+    '--skip-install-deps': Boolean,
     '--package-manager': String,
 
     // alias
@@ -23,7 +24,8 @@ async function main() {
     '-t': '--template',
     '-h': '--help',
     '-v': '--version',
-    '-pm': '--package-manager',
+    '-s': '--skip-install-deps',
+    '-m': '--package-manager',
   }, { permissive: true })
 
   if (args['--version']) {
@@ -34,11 +36,12 @@ async function main() {
   if (args['--help']) {
     console.log('Usage: create-app [options]\n')
     console.log('Options:')
-    console.log('--project-name       -p    Project name to be used.')
-    console.log('--template           -t    Name of the template to use.')
-    console.log('--help               -h    Show how to use the cli.')
-    console.log('--version            -v    Show the current version of the cli.')
-    console.log('--package-manager    -pm   Select the package manager, the default is npm.')
+    console.log('-p,  --project-name           Project name to be used.')
+    console.log('-t,  --template               Name of the template to use.')
+    console.log('-h,  --help                   Show how to use the cli.')
+    console.log('-v,  --version                Show the current version of the cli.')
+    console.log('-s,  --skip-install-deps      Skip install dependencies.')
+    console.log('-pm, --package-manager        Select the package manager, the default is npm.')
     process.exit(0)
   }
 
@@ -50,7 +53,7 @@ async function main() {
 
   if (!projectName) {
     projectName = await (clack.text({
-      message: 'Your project name: ',
+      message: 'Your project name:',
       placeholder: 'project',
       validate: (value) => {
         if (value.length === 0) return 'Project name is required!'
@@ -75,11 +78,18 @@ async function main() {
     process.exit(1)
   }
 
-  let templatePath: string | symbol | undefined = templates.find(t => t.label === args['--template'])?.value
+  const templateIndex = templates.findIndex(t => t.label === args['--template'])
+
+  if (args['--template'] && templateIndex === -1) {
+    clack.log.error(`'${args['--template']}' isn\'t a valid template.`)
+    process.exit(1)
+  }
+
+  let templatePath: string | symbol | undefined = templates?.[templateIndex]?.value ?? undefined
 
   if (!templatePath) {
     templatePath = await clack.select({
-      message: 'Select template: ',
+      message: 'Select template:',
       options: templates,
       initialValue: templates[0].value,
     })
@@ -115,7 +125,19 @@ async function main() {
     process.exit(1)
   }
 
+  if (args['--skip-install-deps']) {
+    clack.outro('done.')
+    process.exit(0)
+  }
+
+  const packageManagers = ['npm', 'yarn', 'pnpm', 'bun']
+
   let packageManager: string | symbol | undefined = args['--package-manager']
+
+  if (args['--package-manager'] && !packageManagers.includes(args['--package-manager'])) {
+    clack.log.error(`'${args['--package-manager']}' isn\'t a valid package manager.`)
+    process.exit(1)
+  }
 
   if (!packageManager) {
     const isInstallDeps = await clack.confirm({
@@ -134,13 +156,8 @@ async function main() {
 
   if (!packageManager) {
     packageManager = await clack.select({
-      message: 'Select package manager: ',
-      options: [
-        { value: 'npm' },
-        { value: 'pnpm' },
-        { value: 'yarn' },
-        { value: 'bun' },
-      ],
+      message: 'Select package manager:',
+      options: packageManagers.map(value => ({ value })),
       initialValue: 'npm',
     })
     if (clack.isCancel(packageManager)) cancelOp()
