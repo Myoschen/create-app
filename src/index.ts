@@ -102,6 +102,19 @@ async function main() {
     spinner.stop('Copying files succeeded!')
   }
 
+  // overwrite package name
+  try {
+    const pkgPath = path.join(projectPath, 'package.json')
+    const pkg = JSON.parse(await fs.readFile(pkgPath, 'utf-8'))
+    pkg.name = projectName
+    await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
+  }
+  catch (err) {
+    clack.log.error(`Overwriting package name failed!`)
+    err instanceof Error && clack.log.info(err.message)
+    process.exit(1)
+  }
+
   let packageManager: string | symbol | undefined = args['--package-manager']
 
   if (!packageManager) {
@@ -131,19 +144,6 @@ async function main() {
       initialValue: 'npm',
     })
     if (clack.isCancel(packageManager)) cancelOp()
-  }
-
-  // overwrite package name
-  try {
-    const pkgPath = path.join(projectPath, 'package.json')
-    const pkg = JSON.parse(await fs.readFile(pkgPath, 'utf-8'))
-    pkg.name = projectName
-    await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
-  }
-  catch (err) {
-    clack.log.error(`Overwriting package name failed!`)
-    err instanceof Error && clack.log.info(err.message)
-    process.exit(1)
   }
 
   // check package manager exists
