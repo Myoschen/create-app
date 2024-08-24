@@ -13,11 +13,11 @@ export type Template = {
   value: string
 }
 
-export async function loadTemplates(templatePath: string): Promise<Template[]> {
-  const folderNames = await fs.readdir(templatePath)
+export async function loadTemplates(dirPath: string): Promise<Template[]> {
+  const folderNames = await fs.readdir(dirPath)
   return folderNames.map(name => ({
     label: name,
-    value: path.join(templatePath, name),
+    value: path.join(dirPath, name),
   }))
 }
 

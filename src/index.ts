@@ -46,7 +46,7 @@ async function main() {
 
   clack.intro(pc.blue(`${cliPkg.name} v${cliPkg.version}`))
 
-  const currDir = process.cwd()
+  const cwd = process.cwd()
 
   if (!projectName) {
     projectName = await (clack.text({
@@ -60,14 +60,14 @@ async function main() {
     if (clack.isCancel(projectName)) cancelOp()
   }
 
-  const projectPath = path.resolve(currDir, projectName)
+  const projectPath = path.resolve(cwd, projectName)
   projectName = path.basename(projectPath)
 
   let templates: Template[] = []
 
   try {
     const __dirname = path.dirname(fileURLToPath(import.meta.url))
-    templates = await loadTemplates(path.join(__dirname, 'templates'))
+    templates = await loadTemplates(path.resolve(__dirname, '../templates'))
   }
   catch (err) {
     clack.log.error('Loading templates failed!')
