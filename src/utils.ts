@@ -1,7 +1,7 @@
 import cp from 'node:child_process'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import clack from '@clack/prompts'
+import * as clack from '@clack/prompts'
 
 export function cancelOp(): never {
   clack.cancel('Operation cancelled!')

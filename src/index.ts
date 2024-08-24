@@ -3,7 +3,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import clack from '@clack/prompts'
+import * as clack from '@clack/prompts'
 import arg from 'arg'
 import pc from 'picocolors'
 
