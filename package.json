@@ -20,8 +20,7 @@
     "build": "tsup",
     "start": "tsup && node dist/index.js",
     "lint": "eslint src",
-    "test": "vitest run",
-    "preinstall": "npx only-allow pnpm"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2.6.4",
