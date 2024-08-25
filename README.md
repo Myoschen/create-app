@@ -4,6 +4,8 @@
 ![GitHub issues](https://img.shields.io/github/issues/Myoschen/create-app?style=flat-square&labelColor=%23222222&color=%23111111) 
 ![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/Myoschen/create-app/main?style=flat-square&label=version&labelColor=%23222222&color=%23111111)
 ![GitHub License](https://img.shields.io/github/license/Myoschen/create-app?style=flat-square&labelColor=%23222222&color=%23111111)
+![NPM Version](https://img.shields.io/npm/v/%40myoschen%2Fcreate-app?style=flat-square&labelColor=%23222222&color=%23111111)
+
 
 ## Usage
 
