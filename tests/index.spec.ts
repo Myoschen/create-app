@@ -4,6 +4,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { afterEach, beforeAll, expect, test } from 'vitest'
 
+import pkg from '../package.json'
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // vars
@@ -30,13 +32,13 @@ afterEach(() => {
 // tests
 test('return cli version', () => {
   const { stdout } = run(['--version'])
-  const message = 'v0.0.1'
+  const message = `v${pkg.version}`
   expect(stdout).toContain(message)
 })
 
 test('return cli version (alias)', () => {
   const { stdout } = run(['-v'])
-  const message = 'v0.0.1'
+  const message = `v${pkg.version}`
   expect(stdout).toContain(message)
 })
 
