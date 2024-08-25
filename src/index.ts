@@ -16,7 +16,7 @@ async function main() {
     '--template': String,
     '--help': Boolean,
     '--version': Boolean,
-    '--skip-install-deps': Boolean,
+    '--skip-install': Boolean,
     '--package-manager': String,
 
     // alias
@@ -24,7 +24,7 @@ async function main() {
     '-t': '--template',
     '-h': '--help',
     '-v': '--version',
-    '-s': '--skip-install-deps',
+    '-s': '--skip-install',
     '-m': '--package-manager',
   }, { permissive: true })
 
@@ -125,7 +125,7 @@ async function main() {
     process.exit(1)
   }
 
-  if (args['--skip-install-deps']) {
+  if (args['--skip-install']) {
     clack.outro('done.')
     process.exit(0)
   }
