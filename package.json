@@ -1,11 +1,16 @@
 {
   "name": "@myoschen/create-app",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A cli tool to scaffold project.",
   "author": {
     "name": "Myoschen",
     "email": "myos.chen@gmail.com",
     "url": "https://github.com/Myoschen"
+  },
+  "homepage": "https://github.com/Myoschen/create-app#readme",
+  "repository": {
+    "type": "git",
+    "url" : "git@github.com:Myoschen/create-app.git"
   },
   "license": "MIT",
   "type": "module",
@@ -13,14 +18,16 @@
     "create-app": "dist/index.js"
   },
   "files": [
-    "dist/**/*"
+    "dist/**/*",
+    "templates/**/*"
   ],
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsup",
     "start": "tsup && node dist/index.js",
     "lint": "eslint src",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "nr build"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2.6.4",
