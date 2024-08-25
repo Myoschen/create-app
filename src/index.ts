@@ -112,15 +112,21 @@ async function main() {
     spinner.stop('Copying files succeeded!')
   }
 
-  // overwrite package name
+  // overwrite files
   try {
+    // rename package name
     const pkgPath = path.join(projectPath, 'package.json')
     const pkg = JSON.parse(await fs.readFile(pkgPath, 'utf-8'))
     pkg.name = projectName
     await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
+
+    // rename gitignore
+    const oldPath = path.join(projectPath, '_gitignore')
+    const newPath = path.join(projectPath, '.gitignore')
+    await fs.rename(oldPath, newPath)
   }
   catch (err) {
-    clack.log.error(`Overwriting package name failed!`)
+    clack.log.error(`Overwriting files failed!`)
     err instanceof Error && clack.log.info(err.message)
     process.exit(1)
   }
