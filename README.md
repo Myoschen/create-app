@@ -10,14 +10,7 @@
 ## Usage
 
 ```bash
-# install package
-npm install -g @myoschen/create-app
-yarn add -g @myoschen/create-app
-pnpm add -g @myoschen/create-app
-bun add -g @myoschen/create-app
-
-# see usage
-create-app --help
+npx @myoschen/create-app
 ```
 
 ## Contributions
