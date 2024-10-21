@@ -1,6 +1,6 @@
 {
   "name": "@myoschen/create-app",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A cli tool to scaffold project.",
   "author": {
     "name": "Myoschen",
