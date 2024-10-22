@@ -41,7 +41,7 @@ async function main() {
     console.log('-h,  --help                   Show how to use the cli.')
     console.log('-v,  --version                Show the current version of the cli.')
     console.log('-s,  --skip-install-deps      Skip install dependencies.')
-    console.log('-pm, --package-manager        Select the package manager, the default is npm.')
+    console.log('-m,  --package-manager        Select the package manager, the default is npm.')
     process.exit(0)
   }
 
