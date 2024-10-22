@@ -25,8 +25,7 @@ export async function createFolder(folderPath: string) {
   const resolvedPath = path.resolve(folderPath)
   try {
     await fs.access(resolvedPath)
-  }
-  catch {
+  } catch {
     await fs.mkdir(resolvedPath, { recursive: true })
   }
 }
@@ -41,8 +40,7 @@ export async function copyFiles(src: string, dest: string) {
       const destPath = path.join(dest, item)
       await copyFiles(srcPath, destPath)
     }
-  }
-  else if (stats.isFile()) {
+  } else if (stats.isFile()) {
     await fs.copyFile(src, dest)
   }
 }

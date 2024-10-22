@@ -71,8 +71,7 @@ async function main() {
   try {
     const __dirname = path.dirname(fileURLToPath(import.meta.url))
     templates = await loadTemplates(path.resolve(__dirname, '../templates'))
-  }
-  catch (err) {
+  } catch (err) {
     clack.log.error('Loading templates failed!')
     err instanceof Error && clack.log.info(err.message)
     process.exit(1)
@@ -102,13 +101,11 @@ async function main() {
     spinner.start('Copying files...')
     await createFolder(projectPath)
     await copyFiles(templatePath, projectPath)
-  }
-  catch (err) {
+  } catch (err) {
     clack.log.error('Copying files failed!')
     err instanceof Error && clack.log.info(err.message)
     process.exit(1)
-  }
-  finally {
+  } finally {
     spinner.stop('Copying files succeeded!')
   }
 
@@ -124,8 +121,7 @@ async function main() {
     const oldPath = path.join(projectPath, '_gitignore')
     const newPath = path.join(projectPath, '.gitignore')
     await fs.rename(oldPath, newPath)
-  }
-  catch (err) {
+  } catch (err) {
     clack.log.error(`Overwriting files failed!`)
     err instanceof Error && clack.log.info(err.message)
     process.exit(1)
@@ -172,8 +168,7 @@ async function main() {
   // check package manager exists
   try {
     await checkPackageManager(packageManager)
-  }
-  catch (err) {
+  } catch (err) {
     clack.log.error(`You haven't installed the ${packageManager} package manager!`)
     err instanceof Error && clack.log.info(err.message)
     process.exit(1)
@@ -182,13 +177,11 @@ async function main() {
   try {
     spinner.start('Installing dependencies...')
     await runCommand(packageManager, ['install'], projectPath)
-  }
-  catch (err) {
+  } catch (err) {
     clack.log.error('Installing dependencies failed!')
     err instanceof Error && clack.log.info(err.message)
     process.exit(1)
-  }
-  finally {
+  } finally {
     spinner.stop('Installing dependencies succeeded!')
   }
 

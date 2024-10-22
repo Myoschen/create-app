@@ -10,6 +10,7 @@ export default [
     quotes: 'single',
     semi: false,
     jsx: false,
+    braceStyle: '1tbs',
   }),
   {
     files: ['**/*.{js,ts}'],
