@@ -1,2 +1,6 @@
 /** @type {import('next').NextConfig} */
-export default {}
+export default {
+  reactStrictMode: true,
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
+}

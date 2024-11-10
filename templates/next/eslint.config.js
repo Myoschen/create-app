@@ -1,3 +1,4 @@
+import { fixupConfigRules } from '@eslint/compat'
 import pluginNext from '@next/eslint-plugin-next'
 import stylistic from '@stylistic/eslint-plugin'
 import pluginTs from '@typescript-eslint/eslint-plugin'
@@ -7,8 +8,7 @@ import pluginReactHooks from 'eslint-plugin-react-hooks'
 import pluginImportSort from 'eslint-plugin-simple-import-sort'
 import pluginTailwind from 'eslint-plugin-tailwindcss'
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
+export default fixupConfigRules([
   // stylistic
   stylistic.configs.customize({
     indent: 2,
@@ -75,4 +75,4 @@ export default [
       ],
     },
   },
-]
+])
